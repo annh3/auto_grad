@@ -4,7 +4,9 @@ import numpy as np
 
 class Value:
 
-    def __init__(self, data, _children=(), _op=''):
+    def __init__(self, data=None, _children=(), _op=''):
+        if data is None:
+          data = random.uniform(-2,2)
         self.data = data
         self.grad = 0
         self._backward = lambda: None
@@ -68,6 +70,11 @@ class Value:
         out._backward = _backward
 
         return out
+
+    # Other operations implemented in terms of prior ones 
+    def __float__(self): return float(self.data)
+    def __radd__(self, other): return self + other
+    def __rmul__(self, other): return self * other
 
 
     def backward(self):
